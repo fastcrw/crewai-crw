@@ -16,8 +16,9 @@ from pydantic import BaseModel, ConfigDict, Field
 def _make_client(api_url: str | None, api_key: str | None) -> CrwClient:
     """Create a CrwClient instance.
 
-    If api_url is None the SDK spawns crw-mcp as a subprocess (no server needed).
-    If api_url is given it uses HTTP mode.
+    CRW is cloud-first: with no api_url and no key the SDK targets the managed
+    cloud (sign up for 500 free credits, set CRW_API_KEY). Pass an api_url for a
+    self-hosted server, or set CRW_LOCAL=1 to run the local engine.
     """
     return CrwClient(api_url=api_url, api_key=api_key)
 
@@ -36,8 +37,10 @@ class CrwScrapeWebsiteTool(BaseTool):
     self-hosted (free) or via the managed cloud at fastcrw.com.
 
     Args:
-        api_url: CRW server URL. If None, spawns crw-mcp binary locally.
-        api_key: Optional API key (required for fastcrw.com cloud).
+        api_url: CRW server URL for a self-hosted server. If None, uses the
+            managed cloud by default (set CRW_LOCAL=1 to run locally instead).
+        api_key: Cloud API key (or CRW_API_KEY env). Sign up for 500 free credits
+            at fastcrw.com/dashboard.
         config: Scrape configuration options.
 
     Configuration options:
@@ -129,8 +132,10 @@ class CrwCrawlWebsiteTool(BaseTool):
     and sitemap support. Runs self-hosted (free) or via fastcrw.com cloud.
 
     Args:
-        api_url: CRW server URL. If None, spawns crw-mcp binary locally.
-        api_key: Optional API key (required for fastcrw.com cloud).
+        api_url: CRW server URL for a self-hosted server. If None, uses the
+            managed cloud by default (set CRW_LOCAL=1 to run locally instead).
+        api_key: Cloud API key (or CRW_API_KEY env). Sign up for 500 free credits
+            at fastcrw.com/dashboard.
         config: Crawl configuration options.
         poll_interval: Seconds between status checks. Default: 2
         max_wait: Maximum seconds to wait for crawl completion. Default: 300
@@ -219,8 +224,10 @@ class CrwMapWebsiteTool(BaseTool):
     Uses sitemap.xml and link discovery to find all pages.
 
     Args:
-        api_url: CRW server URL. If None, spawns crw-mcp binary locally.
-        api_key: Optional API key (required for fastcrw.com cloud).
+        api_url: CRW server URL for a self-hosted server. If None, uses the
+            managed cloud by default (set CRW_LOCAL=1 to run locally instead).
+        api_key: Cloud API key (or CRW_API_KEY env). Sign up for 500 free credits
+            at fastcrw.com/dashboard.
         config: Map configuration options.
 
     Configuration options:

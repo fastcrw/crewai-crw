@@ -16,41 +16,39 @@ pip install crewai crewai-crw
 uv add crewai crewai-crw
 ```
 
-That's it. No server to install, no `cargo install`, no Docker. The `crw` SDK automatically downloads and manages the CRW binary for you.
+**Requirements:** Python 3.11–3.13. The upper bound currently tracks `crewai`'s own `python = ">=3.10,<3.14"` constraint — on Python 3.14 the dependency resolver fails at `crewai` resolution, not `crewai-crw`.
 
-## Quick Start — Zero Config (Subprocess Mode)
+## Quick Start — Cloud (default)
+
+CRW is cloud-first. [Sign up at fastcrw.com](https://fastcrw.com/dashboard) for **500 free credits** — no payment, no monthly reset (GitHub/Google, ~10s) — then set `CRW_API_KEY`:
 
 ```python
 from crewai_crw import CrwScrapeWebsiteTool
 
-# Just works — crw SDK handles everything locally
+# Uses the managed cloud (api.fastcrw.com) — reads CRW_API_KEY from the env
+scrape_tool = CrwScrapeWebsiteTool()
+
+# ...or pass the key explicitly
+scrape_tool = CrwScrapeWebsiteTool(api_key="crw_live_...")
+```
+
+## Self-hosting
+
+Prefer to run the engine yourself? Two options.
+
+**Local zero-config engine** — set `CRW_LOCAL=1` (no server, no key; the `crw` SDK manages the binary):
+
+```python
+# CRW_LOCAL=1 in the environment
 scrape_tool = CrwScrapeWebsiteTool()
 ```
 
-## Cloud Mode ([fastcrw.com](https://fastcrw.com))
-
-No local binary needed. [Sign up at fastcrw.com](https://fastcrw.com) and get **500 free credits**:
-
-```python
-from crewai_crw import CrwScrapeWebsiteTool
-
-scrape_tool = CrwScrapeWebsiteTool(
-    api_url="https://fastcrw.com/api",
-    api_key="crw_live_...",  # or set CRW_API_KEY env var
-)
-```
-
-## Advanced: Self-hosted Server
-
-If you prefer running a persistent CRW server (e.g., shared across services):
+**Persistent server** (shared across services):
 
 ```bash
-# Option A: Install binary
 curl -fsSL https://raw.githubusercontent.com/us/crw/main/install.sh | sh
-crw  # starts on http://localhost:3000
-
-# Option B: Docker
-docker run -d -p 3000:3000 ghcr.io/us/crw:latest
+crw serve  # http://localhost:3000
+# or: docker run -d -p 3000:3000 ghcr.io/us/crw:latest
 ```
 
 ```python

@@ -6,7 +6,7 @@
 
 CRW web scraping tools for [CrewAI](https://github.com/crewAIInc/crewAI) — scrape, crawl, map, and search the web with AI agents.
 
-[CRW](https://github.com/us/crw) is an open-source web scraper built for AI agents. Single Rust binary, ~6 MB idle RAM, Firecrawl-compatible API.
+[CRW](https://github.com/fastcrw/crw) is an open-source web scraper built for AI agents. Single Rust binary, ~6 MB idle RAM, Firecrawl-compatible API.
 
 ## Installation
 
@@ -46,11 +46,11 @@ If you prefer running a persistent CRW server (e.g., shared across services):
 
 ```bash
 # Option A: Install binary
-curl -fsSL https://raw.githubusercontent.com/us/crw/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/fastcrw/crw/main/install.sh | sh
 crw  # starts on http://localhost:3000
 
 # Option B: Docker
-docker run -d -p 3000:3000 ghcr.io/us/crw:latest
+docker run -d -p 3000:3000 ghcr.io/fastcrw/crw:latest
 ```
 
 ```python
